@@ -42,7 +42,8 @@ module.exports = {
             comments: DEV,
             compress:{
                 warnings:false
-            }
+            },
+            sourcemap: DEV
         })
     ],
 
