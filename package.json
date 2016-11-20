@@ -4,9 +4,10 @@
   "description": "",
   "main": "./dist/index.html",
   "scripts": {
+    "deploy": "pscp -r dist/ sites.mulder.kiev.ua:/opt/TestApiWeb/dist",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack --NODE_ENV=development",
-    "prod": "webpack"
+    "dev": "webpack --NODE_ENV=development && npm run deploy",
+    "prod": "webpack && npm run deploy"
   },
   "author": "",
   "license": "ISC",
@@ -25,11 +26,14 @@
     "webpack": "^1.13.3"
   },
   "dependencies": {
+    "material-ui": "^0.16.4",
     "react": "^15.4.0",
     "react-dom": "^15.4.0",
+    "react-materialize": "^0.17.2",
     "react-redux": "^4.4.6",
     "react-router": "^3.0.0",
     "react-router-redux": "^4.0.7",
+    "react-tap-event-plugin": "^2.0.1",
     "redux": "^3.6.0",
     "redux-devtools": "^3.3.1",
     "redux-devtools-dock-monitor": "^1.1.1",

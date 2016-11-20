@@ -6,10 +6,14 @@ import Button from 'material-ui/RaisedButton'
 
 class User extends Component {
 
-    componentDidMount(){
+  /*  componentDidMount(){
+    this.props.dispatch(fetchViewerProps())
+    }*/
+
+    fetchData(){
         this.props.dispatch(fetchViewerProps())
     }
-    
+
     render(){
         const {params, token} = this.props
         const {id} = params
@@ -21,6 +25,7 @@ class User extends Component {
             <Button
                 label="test"
                 primary={true}
+                onClick={() => this.fetchData()}
             />
         </div>
     }

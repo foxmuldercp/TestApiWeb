@@ -6,7 +6,7 @@ import {Provider} from 'react-redux'
 import {syncHistoryWithStore, routerReducer, routerMiddleware} from 'react-router-redux'
 import thunk from 'redux-thunk'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
- 
+
 //import {createDevTools} from 'redux-devtools'
 //import DockMonitor from 'redux-devtools-dock-monitor'
 //import LogMonitor from 'redux-devtools-log-monitor'
