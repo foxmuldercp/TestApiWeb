@@ -55,8 +55,6 @@ class NavBar extends Component {
 
   render() {
     const email = this.props.email
-    console.log('navbar props', this.props)
-
     return (
       <div>
         <AppBar

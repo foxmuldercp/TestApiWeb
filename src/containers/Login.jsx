@@ -17,7 +17,7 @@ class Login extends Component {
   }
 
   /*  componentDidMount(){
-    this.props.dispatch(fetchViewerProps())
+    this.props.dispatch(fetchViewerProps(this.state))
   }*/
 
   handleChange = (event) => {
@@ -26,7 +26,7 @@ class Login extends Component {
   }
 
   fetchData(){
-    this.props.dispatch(fetchViewerProps())
+    this.props.dispatch(fetchViewerProps(this.state))
   }
 
   render(){
@@ -58,7 +58,6 @@ class Login extends Component {
 
 }
 
-export default Login
-// = connect(store => ({
-//    token: store.viewer.token,
-// }))(User)
+export default Login = connect(store => ({
+    token: store.viewer.token, token: store.viewer.email
+}))(Login)
