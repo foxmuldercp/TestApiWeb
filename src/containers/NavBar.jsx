@@ -13,10 +13,11 @@ import NavigationClose from 'material-ui/svg-icons/navigation/close'
 class LoginBtn extends Component {
   static muiName = 'FlatButton';
 
+
   render() {
-    const {dispatch} = this.props;
+//    const {dispatch} = this.props;
     return (<div>
-      <FlatButton {...this.props} label="Login" onClick={() => dispatch(push('/login'))} />
+      <FlatButton {...this.props} label="Login" onClick={() => this.props.dispatch(push('/login'))} />
       <FlatButton {...this.props} label="Register" />
     </div>);
   }
@@ -61,7 +62,7 @@ class NavBar extends Component {
         <AppBar
           title="Title"
           iconElementLeft={<IconButton><NavigationClose /></IconButton>}
-          iconElementRight={email ? <div> {this.state.email} <Logged /> </div>:<LoginBtn />}
+          iconElementRight={email ? <div> {this.state.email} <Logged  /> </div>:<LoginBtn {...this.props} />}
         />
       </div>
     )
