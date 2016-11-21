@@ -6,8 +6,10 @@
   "scripts": {
     "deploy": "pscp -r dist/ sites.mulder.kiev.ua:/opt/TestApiWeb/dist",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack --NODE_ENV=development && npm run deploy",
-    "prod": "webpack && npm run deploy"
+    "devw": "webpack --NODE_ENV=development && npm run deploy",
+    "dev": "webpack --NODE_ENV=development",
+    "prodw": "webpack && npm run deploy",
+    "prod": "webpack"
   },
   "author": "",
   "license": "ISC",

@@ -11,7 +11,7 @@ class Login extends Component {
         super(props)
 
         this.state = {
-            login: 'User name',
+            login:    '',
             password: ''
         }
     }
@@ -29,7 +29,7 @@ class Login extends Component {
                 value={this.state.login}
                 onChange={this.handleChange}
                 hintText="Your E-mail"
-                floatingLabelText="Password"
+                floatingLabelText="E-Mail"
             />
             <TextField
                 id="password"

@@ -15,11 +15,11 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import routes from './routes'
 import Reducers from './Reducers'
 
-import injectTapEventPlugin from 'react-tap-event-plugin';
+import injectTapEventPlugin from 'react-tap-event-plugin'
 
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
-injectTapEventPlugin();
+injectTapEventPlugin()
 
 // createDevTools takes a monitor and produces a DevTools component
 /*const DevTools = createDevTools(
@@ -27,7 +27,7 @@ injectTapEventPlugin();
     // Consult their repositories to learn about those props.
     // Here, we put LogMonitor inside a DockMonitor.
     // Note: DockMonitor is visible by default.
-    <DockMonitor 
+    <DockMonitor
         toggleVisibilityKey='ctrl-h'
         changePositionKey='ctrl-q'
         defaultIsVisible={true}
