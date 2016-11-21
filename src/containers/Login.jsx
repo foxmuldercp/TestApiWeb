@@ -16,13 +16,15 @@ class Login extends Component {
     }
   }
 
-  /*  componentDidMount(){
+  /*
+    componentDidMount(){
     this.props.dispatch(fetchViewerProps(this.state))
-  }*/
+  }
+  */
 
   handleChange = (event) => {
-    console.log(this.state)
     this.setState({...this.state, [event.target.name]: event.target.value})
+    console.log(this.state)
   }
 
   fetchData(){
