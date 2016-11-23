@@ -17,12 +17,10 @@ export function fetchViewerProps(data) {
    })
   .then(response => response.json())
   .then(json => dispatch({
-     type:'auth_success',
-     payload:{
-       ...json
-     }
-  }),
-  dispatch(push('/'))
+      type:'auth_success',
+      payload:{ ...json }
+    }),
+    dispatch(push('/'))
   )
-  //.catch(alert('something is wrong'))
+  .catch(alert('something is wrong'))
 }}}
