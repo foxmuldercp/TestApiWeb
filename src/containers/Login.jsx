@@ -3,9 +3,6 @@ import {connect} from 'react-redux'
 
 import {fetchViewerProps} from '../actions/viewer'
 
-import TextField from "material-ui/TextField"
-import Button from "material-ui/RaisedButton"
-
 class Login extends Component {
 
   constructor(props) {
@@ -24,7 +21,6 @@ class Login extends Component {
 
   handleChange = (event) => {
     this.setState({...this.state, [event.target.name]: event.target.value})
-    console.log(this.state)
   }
 
   fetchData(){
@@ -32,29 +28,7 @@ class Login extends Component {
   }
 
   render(){
-    return <div>
-      <TextField
-         id="login"
-         name="email"
-         value={this.state.email}
-         onChange={this.handleChange}
-         hintText="Your E-mail"
-         floatingLabelText="E-Mail"
-      />
-      <TextField
-         id="password"
-         name="password"
-         value={this.state.password}
-         onChange={this.handleChange}
-         hintText="Password"
-         floatingLabelText="Password"
-         type="password"
-      /><br />
-      <Button
-         label="Sign in"
-         primary={true}
-         onClick={() => this.fetchData()}
-      />
+    return <div>Login
     </div>
   }
 

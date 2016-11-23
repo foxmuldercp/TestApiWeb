@@ -9,7 +9,8 @@
     "devw": "webpack --NODE_ENV=development && npm run deploy",
     "dev": "webpack --NODE_ENV=development",
     "prodw": "webpack && npm run deploy",
-    "prod": "webpack"
+    "production": "webpack -p --define process.env.NODE_ENV='\"production\"' --progress --colors",
+    "watch": "webpack --watch --colors --progress --NODE_ENV=development"
   },
   "author": "",
   "license": "ISC",
@@ -21,7 +22,10 @@
     "babel-preset-stage-0": "^6.16.0",
     "css-loader": "^0.26.0",
     "file-loader": "^0.9.0",
+    "font-awesome": "^4.7.0",
     "html-webpack-plugin": "^2.24.1",
+    "less": "^2.7.1",
+    "less-loader": "^2.2.3",
     "minimist": "^1.2.0",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
@@ -29,6 +33,7 @@
   },
   "dependencies": {
     "material-ui": "^0.16.4",
+    "muicss": "^0.9.4",
     "react": "^15.4.0",
     "react-dom": "^15.4.0",
     "react-materialize": "^0.17.2",

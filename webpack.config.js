@@ -20,6 +20,11 @@ module.exports = {
     extensions:['', '.webpack.js', '.web.js', '.ts', '.js', '.min.js', '.jsx']
   },
   plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+      'NODE_ENV': JSON.stringify('production')
+    }
+    }),
     new HTMLWebpackPlugin({
       template: './src/index.html',
       inject: false
@@ -28,6 +33,8 @@ module.exports = {
 
   module:{
     loaders:[
+      // the url-loader uses DataUrls. 
+      // the file-loader emits files. 
       {
         test: /\.jsx$/,
         exclude: /node_modules/,
@@ -42,8 +49,10 @@ module.exports = {
       }, {
         test: /.json/,
         loader:'file?name=json/[name].[ext]'
-      }
+      },
+      { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url-loader?limit=10000&minetype=application/font-woff" },
+      { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "file-loader" }    
     ]
-  },
-  devtool: 'source-map'
+  }
+//  devtool: 'cheap-module-source-map'
 }

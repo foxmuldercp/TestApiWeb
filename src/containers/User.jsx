@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 
 import {fetchViewerProps} from '../actions/viewer'
-import Button from 'material-ui/RaisedButton'
 
 class User extends Component {
 
@@ -20,13 +19,6 @@ class User extends Component {
 
         return <div>
             <div>{token}</div>
-            {id == undefined && <span>It's me</span>}
-            {id != undefined && <span>it's user {id}</span>}
-            <Button
-                label="test"
-                primary={true}
-                onClick={() => this.fetchData()}
-            />
         </div>
     }
 }

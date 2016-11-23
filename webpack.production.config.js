@@ -1,14 +1,16 @@
 new webpack.DefinePlugin({
   'process.env':{
-    'NODE_ENV': JSON.stringify('production')
+    'NODE_ENV': 'production'
   }
 }),
+new webpack.optimize.DedupePlugin(),
 new webpack.optimize.UglifyJsPlugin({
-  minimize: 'production',
-  mangle: 'production',
-  comments: 'development',
-  compress: 'production', {
-     warnings:false
-  },
-  sourcemap: 'development'
+  minimize: true,
+  mangle: true,
+  comments: false,
+  compress: true, //'production', {
+//    warnings: false,
+//    screw_ie8: true
+//  },
+  sourcemap: false
 })
