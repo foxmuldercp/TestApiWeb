@@ -3,14 +3,8 @@ import {connect} from 'react-redux'
 
 import {fetchViewerProps} from '../actions/viewer'
 
-import Container from 'muicss/lib/react/container'
-import Row from 'muicss/lib/react/row'
-import Col from 'muicss/lib/react/col'
-
-import Form from 'muicss/lib/react/form'
-import Input from 'muicss/lib/react/input'
-import Textarea from 'muicss/lib/react/textarea'
-import Button from 'muicss/lib/react/button'
+import TextField from "material-ui/TextField"
+import Button from "material-ui/RaisedButton"
 
 class Login extends Component {
 
@@ -32,18 +26,35 @@ class Login extends Component {
     this.setState({...this.state, [event.target.name]: event.target.value})
   }
 
-  fetchData(e){
-    e.preventDefault()
+  fetchData(){
     this.props.dispatch(fetchViewerProps(this.state))
   }
 
   render(){
-    return <Container> <Col md="4" md-offset="4"> <Form>
-        <legend>Sign in</legend>
-        <Input id="login" name="email" onChange={this.handleChange} value={this.state.email} required={true} />
-        <Input id="password" name="password" onChange={this.handleChange} value={this.state.password} required={true} />
-        <Button variant="raised" label="Sign in" primary={true} onSubmit={() => this.fetchData(e)}>Submit</Button>
-    </Form> </Col> </Container>
+    return <div>
+      <TextField
+         id="login"
+         name="email"
+         value={this.state.email}
+         onChange={this.handleChange}
+         hintText="Your E-mail"
+         floatingLabelText="E-Mail"
+      />
+      <TextField
+         id="password"
+         name="password"
+         value={this.state.password}
+         onChange={this.handleChange}
+         hintText="Password"
+         floatingLabelText="Password"
+         type="password"
+      /><br />
+      <Button
+         label="Sign in"
+         primary={true}
+         onClick={() => this.fetchData()}
+      />
+    </div>
   }
 
 }
