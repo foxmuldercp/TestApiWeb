@@ -15,12 +15,20 @@ export function fetchViewerProps(data) {
       method: 'POST',
       body: JSON.stringify(auth)
    })
-  .then(response => response.json())
-  .then(json => dispatch({
-      type:'auth_success',
-      payload:{ ...json }
-    }),
-    dispatch(push('/'))
-  )
-  .catch(alert('something is wrong'))
+   .then(response => response.json())
+   .then(json => dispatch({
+     type:'auth_success',
+     payload:{
+       ...json
+     }
+   }),
+   dispatch(push('/'))
+  )//.catch(alert('something is wrong'))
 }}}
+
+export function logOut() {
+  return function (dispatch, getState) {
+    dispatch({ type:'auth_logoff', null })
+    dispatch(push('/'))
+  }
+}
