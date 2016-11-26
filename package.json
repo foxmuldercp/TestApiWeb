@@ -32,6 +32,7 @@
     "webpack": "^1.13.3"
   },
   "dependencies": {
+    "jwt-decode": "^2.1.0",
     "material-ui": "^0.16.4",
     "muicss": "^0.9.4",
     "react": "^15.4.0",
