@@ -2,14 +2,13 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {push} from 'react-router-redux'
 import NavBar from './NavBar'
-//import AppsList from './AppsList'
 
 class HostPage extends Component {
   render() {
     const {children, dispatch} = this.props;
 
     return <div>
-      <NavBar />
+      <NavBar {...dispatch} />
       {children}
     </div>
   }
