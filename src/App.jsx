@@ -5,7 +5,9 @@ import {combineReducers, applyMiddleware, createStore, compose} from 'redux'
 import {Provider} from 'react-redux'
 import {syncHistoryWithStore, routerReducer, routerMiddleware} from 'react-router-redux'
 import thunk from 'redux-thunk'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import 'roboto-fontface/css/roboto/roboto-fontface.css'
+import './css.css'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 
 import routes from './routes'
 import Reducers from './Reducers'
