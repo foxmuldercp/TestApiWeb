@@ -8,7 +8,7 @@ import IconMenu from 'material-ui/IconMenu'
 import MenuItem from 'material-ui/MenuItem'
 import FlatButton from 'material-ui/FlatButton'
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert'
-import NavigationClose from 'material-ui/svg-icons/navigation/close'
+import NavMenuIcon from 'material-ui/svg-icons/navigation/menu'
 
 import {logOut} from '../actions/viewer'
 
@@ -16,9 +16,7 @@ import {logOut} from '../actions/viewer'
 class LoginBtn extends Component {
   static muiName = 'FlatButton';
 
-
   render() {
-//    const {dispatch} = this.props
     return (<div>
       <FlatButton {...this.props} label="Login" onClick={() => this.props.dispatch(push('/login'))} />
       <FlatButton {...this.props} label="Register" />
@@ -27,11 +25,11 @@ class LoginBtn extends Component {
 }
 
 class Logged extends Component {
+  static muiName = 'IconButton';
+
   render() {
   return <IconMenu
-    iconButtonElement={
-      <IconButton><MoreVertIcon /></IconButton>
-    }
+    iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
     targetOrigin={{horizontal: 'right', vertical: 'top'}}
     anchorOrigin={{horizontal: 'right', vertical: 'top'}}
   >
@@ -40,6 +38,19 @@ class Logged extends Component {
     <MenuItem name='SignOut' primaryText="Sign out" onClick={() => this.props.dispatch(logOut())} />
   </IconMenu>
 }}
+
+class NavMenuItems extends Component {
+  render() {
+  return <IconMenu
+    iconButtonElement={<IconButton><NavMenuIcon /></IconButton>}
+      targetOrigin={{horizontal: 'left', vertical: 'center'}}
+      anchorOrigin={{horizontal: 'left', vertical: 'center'}}>
+    <MenuItem name='Domains' primaryText="Domains" onClick={() => this.props.dispatch(push('/login'))} />
+    <MenuItem name='Hosting' primaryText="Hosting" onClick={() => this.props.dispatch(push('/login'))} />
+    <MenuItem name='SignOut' primaryText="Sign out" onClick={() => this.props.dispatch(logOut())} />
+  </IconMenu>
+}}
+
 
 /**
  * This example is taking advantage of the composability of the `AppBar`
@@ -54,7 +65,7 @@ class NavBar extends Component {
       <div>
         <AppBar
           title="Title"
-          iconElementLeft={<IconButton><NavigationClose /></IconButton>}
+          iconElementLeft={<NavMenuItems {...this.props} />}
           iconElementRight={ email ? <div> {email} <Logged {...this.props} /> </div>:<LoginBtn {...this.props} />}
         />
       </div>
