@@ -4,7 +4,7 @@ export function fetchViewerProps(data) {
   return function (dispatch, getState) {
     const {viewer} = getState() // get curent redux store
     if (!viewer.token){
-    var url = 'https://sites.mulder.kiev.ua/api/v1/users/sign_in.json'
+    var url = 'https://sites.mulder.kiev.ua/api/v1/users/sign_in'
     var auth = {'user': {'email': data.email, 'password': data.password}}
 
     fetch(url, {
