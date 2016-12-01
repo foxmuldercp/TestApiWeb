@@ -45,9 +45,11 @@ class NavMenuItems extends Component {
     iconButtonElement={<IconButton><NavMenuIcon /></IconButton>}
       targetOrigin={{horizontal: 'left', vertical: 'center'}}
       anchorOrigin={{horizontal: 'left', vertical: 'center'}}>
-    <MenuItem name='Domains' primaryText="Domains" onClick={() => this.props.dispatch(push('/login'))} />
+    { this.props.email ?
+        <MenuItem name='Domains' primaryText="Domains" onClick={() => this.props.dispatch(push('/domains'))} />
+      : null 
+    }
     <MenuItem name='Hosting' primaryText="Hosting" onClick={() => this.props.dispatch(push('/login'))} />
-    <MenuItem name='SignOut' primaryText="Sign out" onClick={() => this.props.dispatch(logOut())} />
   </IconMenu>
 }}
 
