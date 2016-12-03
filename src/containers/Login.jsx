@@ -17,7 +17,10 @@ class Login extends Component {
     super(props)
     this.state = {
       email:    "",
-      password: ""
+      password: "",
+      email_error: "Field is required",
+      password_error: "Field is required",
+      submitDisabled: true
     }
   }
 
@@ -28,7 +31,21 @@ class Login extends Component {
   }
 
   handleChange = (event) => {
-    this.setState({...this.state, [event.target.name]: event.target.value})
+    const state    = this.state
+    const newfield = [event.target.name]
+    const newvalue = event.target.value
+    var errMsg     = 'Required field'
+    var canSubmit  = true
+    if ( newvalue.trim() != '') {
+      errMsg = ''
+    }
+    if (this.state.email_error == '' && this.state.password_error == '') { canSubmit = false }
+    const newstate = {state, [newfield]: newvalue, [newfield+"_error"]: errMsg, submitDisabled: canSubmit}
+    this.setState(newstate) //{...this.state, [event.target.name]: event.target.value})
+
+    //const keys = Object.keys(this.state).map(i => (i).match('error'))
+    // = keys.map(i => { if(typeof(i) !== 'undefined') { i } })
+    //const myitems = Object.keys(this.state).filter(k => k.indexOf('error') !== -1).map(key => doSomethingWith(key))
   }
 
   fetchData(){
@@ -47,9 +64,12 @@ class Login extends Component {
           <TextField
             id="login"
             name="email"
+            type="email"
             value={this.state.email}
             onChange={this.handleChange}
+            onBlur={this.handleChange}
             hintText="Your E-mail"
+            errorText={this.state.email_error}
             floatingLabelText="E-Mail"
           />
         </Col>
@@ -61,7 +81,9 @@ class Login extends Component {
             name="password"
             value={this.state.password}
             onChange={this.handleChange}
+            onBlur={this.handleChange}
             hintText="Password"
+            errorText={this.state.password_error}
             floatingLabelText="Password"
             type="password"
           />
@@ -73,6 +95,7 @@ class Login extends Component {
             label="Sign in"
             primary={true}
             onClick={() => this.fetchData()}
+            disabled={this.state.submitDisabled}
           />
         </Col>
       </Row>
