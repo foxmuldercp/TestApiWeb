@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import Promise from 'promise-polyfill';
 
 import {Router, hashHistory} from 'react-router'
 import {combineReducers, applyMiddleware, createStore, compose} from 'redux'
@@ -11,8 +12,11 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 
 import routes from './routes'
 import Reducers from './Reducers'
-
 import injectTapEventPlugin from 'react-tap-event-plugin'
+
+if (!window.Promise) {
+  window.Promise = Promise;
+}
 
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
