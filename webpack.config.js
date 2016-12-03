@@ -11,7 +11,7 @@ var DEV = NODE_ENV == 'development';
 var PROD = NODE_ENV == 'production';
 
 module.exports = {
-  entry: "./src/main.jsx",
+  entry: ['whatwg-fetch', "./src/main.jsx"],
   output: {
     path: "./dist",
     filename: "bundle.js"
