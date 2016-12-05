@@ -1,6 +1,12 @@
 import React, {Component} from 'react'
+
 import {connect} from 'react-redux'
 import {push} from 'react-router-redux'
+import moment from 'moment/min/moment.min'
+
+import {fetchDomains} from '../actions/domains'
+
+import TBF from './DomainTableBrief'
 
 import {Table, TableBody, TableFooter, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table'
 
@@ -18,6 +24,7 @@ import {Table, TableBody, TableFooter, TableHeader, TableHeaderColumn, TableRow,
 class Domains extends Component {
   constructor(props) {
     super(props)
+    this.props.dispatch(fetchDomains())
 
     this.state = {
       fixedHeader: true,
@@ -25,64 +32,50 @@ class Domains extends Component {
       stripedRows: false,
       showRowHover: false,
       selectable: true,
-      multiSelectable: false,
-      enableSelectAll: false,
+      multiSelectable: true,
+      enableSelectAll: true,
       deselectOnClickaway: true,
       showCheckboxes: true,
-      height: '300px',
-      items: []
+      height: '400px',
+      stripedRows: true,
+      per_page: 10,
+      current_page: 1,
+      domains: this.props.domains,
+      selectedRows: [],
     }
   }
 
-  componentDidMount(){
-    if (this.props.email && this.props.token) {
-      this.updateItems(0,50)
-    } else {
-      this.props.dispatch(push('/login'))
-    }
+  onRowSelection(rows) {
+    console.log('props: ', this.state)
   }
 
-  updateItems(offset, limit) {
-    var link = 'https://sites.mulder.kiev.ua/api/v1/domains'
-    var url
-/*    Object.keys(this.state.filters).map((item, id) => {
-      var key = item;
-      var value = this.state.filters[item];
-      var url = link.concat(key, '=', value, '&');
-      link = url;
-    })
-    url  = link.concat('offset', '=', offset, '&')
-    link = url
-    url  = link.concat('limit', '=',  limit, '&')
-    link = url
-    this.setState({currentMode: 'list', update: true, details: null, edit: null});
-*/
-    fetch(link, {
-      method: 'GET',
-//      mode: 'no-cors',
-//      credentials: 'same-origin',
-      headers: { 'auth-token': this.props.token,
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'}
-    })
-
-    .then(result => result.json())
-    .then(json   => this.setItems(json))
-    .catch ( alert );
+  componentWillReceiveProps(nextProps) {
+    console.log('componentWillReceiveProps: ', nextProps.domains)
+    this.setState({domains: nextProps.domains.domains})
+    console.log('newstate: ', this.state)
   }
 
-  setItems(data) {
-    console.log(data)
-    this.setState({items: data.domains})
+  componentWillMount(){
+  //  this.props.dispatch(fetchDomains())
+  //  console.log('will mount: ', this.props)
+  }
+
+  shortDate(data) {
+    const date = moment(data,'X')
+    return date.format('DD MMM YY')
   }
 
   render() {
+    console.log('render: ', this.props) //.domains.domains[rows])
+    const items = this.props.domains.domains.slice(0,this.state.per_page)
+    const all_count = this.props.domains.all_count
     return <div>
         <Table
           height={this.state.height}
           fixedHeader={this.state.fixedHeader}
           fixedFooter={this.state.fixedFooter}
           selectable={this.state.selectable}
+          onRowSelection={this.onRowSelection}
           multiSelectable={this.state.multiSelectable}>
           <TableHeader
             displaySelectAll={this.state.showCheckboxes}
@@ -105,11 +98,11 @@ class Domains extends Component {
             showRowHover={this.state.showRowHover}
             stripedRows={this.state.stripedRows}
           >
-          {this.state.items.map(item => {
+          {items.map(item => {
               return <TableRow key={item.id}>
                 <TableRowColumn>{item.name_fqdn}</TableRowColumn>
                 <TableRowColumn>{item.status}</TableRowColumn>
-                <TableRowColumn>{item.date_expire}</TableRowColumn>
+                <TableRowColumn>{this.shortDate(item.date_expire)}</TableRowColumn>
               </TableRow>
             })
           }
@@ -118,9 +111,9 @@ class Domains extends Component {
             adjustForCheckbox={this.state.showCheckboxes}
           >
             <TableRow>
-              <TableRowColumn>ID</TableRowColumn>
               <TableRowColumn>Name</TableRowColumn>
               <TableRowColumn>Status</TableRowColumn>
+              <TableRowColumn>Expiration</TableRowColumn>
             </TableRow>
             <TableRow>
               <TableRowColumn colSpan="3" style={{textAlign: 'center'}}>
@@ -135,5 +128,5 @@ class Domains extends Component {
 }
 
 export default Domains = connect(store => ({
-    token: store.viewer.token, email: store.viewer.email
+    token: store.viewer.token, domains: store.domains
 }))(Domains)
