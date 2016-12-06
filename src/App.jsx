@@ -1,5 +1,7 @@
 import React, {Component} from 'react'
-import Promise from 'promise-polyfill';
+import Promise from 'promise-polyfill'
+require('es6-promise').polyfill()
+import 'whatwg-fetch'
 
 import {Router, hashHistory} from 'react-router'
 import {combineReducers, applyMiddleware, createStore, compose} from 'redux'
