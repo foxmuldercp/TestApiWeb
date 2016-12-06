@@ -8,6 +8,7 @@ export function fetchViewerProps(data) {
     var auth = {'user': {'email': data.email, 'password': data.password}}
 
     fetch(url, {
+      credentials: 'include',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
