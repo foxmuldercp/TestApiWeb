@@ -6,20 +6,85 @@ import moment from 'moment/min/moment.min'
 
 import {fetchDomains} from '../actions/domains'
 
-import TBF from './DomainTableBrief'
+import {Table, TableBody, TableFooter, TableHeader, TableHeaderColumn, 
+        TableRow, TableRowColumn} from 'material-ui/Table'
 
-import {Table, TableBody, TableFooter, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table'
+import Chip from 'material-ui/Chip'
 
-  const styles = {
-    propContainer: {
-      width: 200,
-      overflow: 'hidden',
-      margin: '20px auto 0',
-    },
-    propToggleHeader: {
-      margin: '20px auto 10px',
-    },
+const styles = {
+  propContainer: {
+    width: 200,
+    overflow: 'hidden',
+    margin: '20px auto 0',
+  },
+  propToggleHeader: {
+    margin: '20px auto 10px',
+  },
+  chip: {
+    normal: '#F5F5DC',
+//    normal: 'rgb(200, 200, 200)',
+//    normal: 'transparent',
+    clientTransferProhibited: '#FFF8DC',
+    AutoRenewGracePeriod: '#D2691E',
+    clientHold: '#FF8C00',
+    RedemptionPeriod: '#7FFF00',
+    pendingDelete: '#66CDAA',
+    ok: '#90EE90',
+    inactive: '#D3D3D3',
+  },
+  wrapper: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+}
+
+function handleRequestDelete() {
+  alert('You clicked the delete button.');
+}
+
+
+export class Status extends Component {
+
+  chipStyle(item){
+    console.log(item)
+    switch (item){
+    case String(item.match(/ok/)):
+      return styles.chip.ok
+      break
+    case String(item.match(/inactive/)):
+      return styles.chip.inactive
+      break
+    case String(item.match(/clientHold/)):
+      return styles.chip.clientHold
+      break
+    case String(item.match(/pendingDelete/)):
+      return styles.chip.pendingDelete
+      break
+    case String(item.match(/RedemptionPeriod/)):
+      return styles.chip.RedemptionPeriod
+      break
+    case String(item.match(/AutoRenewGracePeriod/)):
+      return styles.chip.AutoRenewGracePeriod
+      break
+    case String(item.match(/clientTransferProhibited/)):
+      return styles.chip.clientTransferProhibited
+      break
+    default:
+      return styles.chip.normal
+      break
+    }
   }
+
+  render(){
+    return <div style={styles.wrapper}>
+      {this.props.children.map(item => {
+        return <Chip onRequestDelete={handleRequestDelete} style={{backgroundColor: this.chipStyle(item)}}>
+          <div>{item}</div>
+        </Chip>
+      })
+    }</div>
+  }
+}
 
 class Domains extends Component {
   constructor(props) {
@@ -41,23 +106,21 @@ class Domains extends Component {
       per_page: 10,
       current_page: 1,
       domains: this.props.domains,
-      selectedRows: [],
+      selectedDomains: []
     }
   }
 
   onRowSelection(rows) {
-    console.log('props: ', this.state)
+    var items = []
+    rows.forEach(i => {
+      items.push(this.state.domains.slice(i, i+1)[0])
+    })
+    const selected = {selectedDomains: items}
+    this.setState(selected)
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('componentWillReceiveProps: ', nextProps.domains)
-    this.setState({domains: nextProps.domains.domains})
-    console.log('newstate: ', this.state)
-  }
-
-  componentWillMount(){
-  //  this.props.dispatch(fetchDomains())
-  //  console.log('will mount: ', this.props)
+    this.setState({domains: nextProps.domains.domains, all_count: nextProps.domains.all_count})
   }
 
   shortDate(data) {
@@ -65,9 +128,13 @@ class Domains extends Component {
     return date.format('DD MMM YY')
   }
 
+  selected(item){
+    return this.state.selectedDomains.includes(item)
+  }
+
   render() {
-    console.log('render: ', this.props) //.domains.domains[rows])
-    const items = this.props.domains.domains.slice(0,this.state.per_page)
+    console.log('selectedDomains: ', this.state.selectedDomains.length)
+    const items = this.props.domains.domains //.slice(0,this.state.per_page)
     const all_count = this.props.domains.all_count
     return <div>
         <Table
@@ -75,8 +142,9 @@ class Domains extends Component {
           fixedHeader={this.state.fixedHeader}
           fixedFooter={this.state.fixedFooter}
           selectable={this.state.selectable}
-          onRowSelection={this.onRowSelection}
+          onRowSelection={::this.onRowSelection}
           multiSelectable={this.state.multiSelectable}>
+          onRowSelection={this.onRowSelection}
           <TableHeader
             displaySelectAll={this.state.showCheckboxes}
             adjustForCheckbox={this.state.showCheckboxes}
@@ -98,10 +166,10 @@ class Domains extends Component {
             showRowHover={this.state.showRowHover}
             stripedRows={this.state.stripedRows}
           >
-          {items.map(item => {
-              return <TableRow key={item.id}>
+          {items.map((item,index) => {
+              return <TableRow key={item.id} selected={this.selected(item)}>
                 <TableRowColumn>{item.name_fqdn}</TableRowColumn>
-                <TableRowColumn>{item.status}</TableRowColumn>
+                <TableRowColumn><Status key={'status'+'-'+item.id}>{item.status}</Status></TableRowColumn>
                 <TableRowColumn>{this.shortDate(item.date_expire)}</TableRowColumn>
               </TableRow>
             })
@@ -122,7 +190,6 @@ class Domains extends Component {
             </TableRow>
           </TableFooter>
         </Table>
-
       </div>
   }
 }
