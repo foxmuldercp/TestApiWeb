@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import {push} from 'react-router-redux'
 import moment from 'moment/min/moment.min'
 
-import {fetchDomains} from '../actions/domains'
+import {fetchDomains, sortDomains} from '../actions/domains'
 
 import {Table, TableBody, TableFooter, TableHeader, TableHeaderColumn, 
         TableRow, TableRowColumn} from 'material-ui/Table'
@@ -22,8 +22,6 @@ const styles = {
   },
   chip: {
     normal: '#F5F5DC',
-//    normal: 'rgb(200, 200, 200)',
-//    normal: 'transparent',
     clientTransferProhibited: '#FFF8DC',
     AutoRenewGracePeriod: '#D2691E',
     clientHold: '#FF8C00',
@@ -46,7 +44,6 @@ function handleRequestDelete() {
 export class Status extends Component {
 
   chipStyle(item){
-    console.log(item)
     switch (item){
     case String(item.match(/ok/)):
       return styles.chip.ok
@@ -89,9 +86,14 @@ export class Status extends Component {
 class Domains extends Component {
   constructor(props) {
     super(props)
-    this.props.dispatch(fetchDomains())
-
+    if (!props.token) {
+      props.dispatch(push('/login'))
+      return
+    } else {
+      props.dispatch(fetchDomains())
+    }
     this.state = {
+      height: '400px',
       fixedHeader: true,
       fixedFooter: true,
       stripedRows: false,
@@ -101,26 +103,32 @@ class Domains extends Component {
       enableSelectAll: true,
       deselectOnClickaway: true,
       showCheckboxes: true,
-      height: '400px',
       stripedRows: true,
       per_page: 10,
       current_page: 1,
-      domains: this.props.domains,
-      selectedDomains: []
+//      domains: props.domains,
+      selectedDomains: [],
+//      order_field: props.domains.order_field,
+    }
+  }
+
+  componentWillMount(){
+    if (!this.props.token) {
+      this.props.dispatch(push('/login'))
     }
   }
 
   onRowSelection(rows) {
     var items = []
     rows.forEach(i => {
-      items.push(this.state.domains.slice(i, i+1)[0])
+      items.push(this.props.domains.slice(i, i+1)[0])
     })
     const selected = {selectedDomains: items}
     this.setState(selected)
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({domains: nextProps.domains.domains, all_count: nextProps.domains.all_count})
+//    this.setState({domains: nextProps.domains.domains, all_count: nextProps.domains.all_count})
   }
 
   shortDate(data) {
@@ -132,9 +140,15 @@ class Domains extends Component {
     return this.state.selectedDomains.includes(item)
   }
 
+  setSort(e) {
+    e.preventDefault()
+//    this.setState({...this.state, order_field: e.target.name})
+    this.props.dispatch(sortDomains(e.target.name))
+  }
+  
   render() {
-    console.log('selectedDomains: ', this.state.selectedDomains.length)
-    const items = this.props.domains.domains //.slice(0,this.state.per_page)
+    // console.log('props: ', this.props)
+    const items = this.props.domains.domains //.slice(0,this.props.per_page)
     const all_count = this.props.domains.all_count
     return <div>
         <Table
@@ -151,13 +165,13 @@ class Domains extends Component {
             enableSelectAll={this.state.enableSelectAll}>
             <TableRow>
               <TableHeaderColumn colSpan="3" tooltip="Super Header" style={{textAlign: 'center'}}>
-                Super Header
+                {this.props.domains.all_count}
               </TableHeaderColumn>
             </TableRow>
             <TableRow>
-              <TableHeaderColumn tooltip="Name">Name</TableHeaderColumn>
+              <TableHeaderColumn tooltip="Name"><a name='name_fqdn' href='#' onClick={::this.setSort}>Name</a></TableHeaderColumn>
               <TableHeaderColumn tooltip="Status">Status</TableHeaderColumn>
-              <TableHeaderColumn tooltip="Expiration">Expiration</TableHeaderColumn>
+              <TableHeaderColumn tooltip="Expiration"><a name='date_expire' href='#' onClick={::this.setSort}>Expiration</a></TableHeaderColumn>
             </TableRow>
           </TableHeader>
           <TableBody

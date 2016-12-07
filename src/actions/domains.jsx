@@ -18,4 +18,11 @@ export function fetchDomains() {
      }
    }),
   )//.catch(alert('something is wrong'))
-}} //}
+}}
+
+export function sortDomains(field) {
+  return function (dispatch, getState) {
+    const {domains} = getState() // get curent redux store
+    console.log('sort:', field)
+    dispatch({ type:'sort', payload:{ order_field: field }})
+}} 

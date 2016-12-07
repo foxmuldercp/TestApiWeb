@@ -1,18 +1,38 @@
 export const initialDomains = {
-  domains:[]
+  domains: [],
+  order_field: 'name_fqdn'
 }
 
 export default function fetchDomains(state=initialDomains, action){
+  var items
   switch (action.type){
 
   case 'load':
-//    console.log('payload: ', action.payload)
+    items = action.payload.domains
     return {
       ...state,
-      domains: action.payload.domains,
+      domains: items,
       all_count: action.payload.meta.count
     }
 
+  case 'sort':
+    const order_field = action.payload.order_field
+    items = state.domains.sort(function (a, b) {
+      if (a[state.order_field] > b[state.order_field]) {
+        return 1;
+      }
+      if (a[state.order_field] < b[state.order_field]) {
+        return -1;
+      }
+      // a eql b
+      return 0;
+    })
+    return {
+      ...state,
+      domains: items,
+      order_field: action.payload.order_field
+    }
+  
   case 'unload':
     return {
       ...state,
