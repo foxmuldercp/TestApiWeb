@@ -75,7 +75,7 @@ export class Status extends Component {
   render(){
     return <div style={styles.wrapper}>
       {this.props.children.map(item => {
-        return <Chip onRequestDelete={handleRequestDelete} style={{backgroundColor: this.chipStyle(item)}}>
+        return <Chip key={item} onRequestDelete={handleRequestDelete} style={{backgroundColor: this.chipStyle(item)}}>
           <div>{item}</div>
         </Chip>
       })
@@ -86,12 +86,6 @@ export class Status extends Component {
 class Domains extends Component {
   constructor(props) {
     super(props)
-    if (!props.token) {
-      props.dispatch(push('/login'))
-      return
-    } else {
-      props.dispatch(fetchDomains())
-    }
     this.state = {
       height: '400px',
       fixedHeader: true,
@@ -106,14 +100,16 @@ class Domains extends Component {
       stripedRows: true,
       per_page: 10,
       current_page: 1,
-//      domains: props.domains,
+      domains: [],
       selectedDomains: [],
-//      order_field: props.domains.order_field,
+      order_field: '', //props.domains.order_field,
     }
   }
 
   componentWillMount(){
-    if (!this.props.token) {
+    if (this.props.token) {
+      this.props.dispatch(fetchDomains())
+    } else {
       this.props.dispatch(push('/login'))
     }
   }
@@ -121,14 +117,16 @@ class Domains extends Component {
   onRowSelection(rows) {
     var items = []
     rows.forEach(i => {
-      items.push(this.props.domains.slice(i, i+1)[0])
+      items.push(this.state.domains.slice(i, i+1)[0])
     })
     const selected = {selectedDomains: items}
     this.setState(selected)
   }
 
   componentWillReceiveProps(nextProps) {
-//    this.setState({domains: nextProps.domains.domains, all_count: nextProps.domains.all_count})
+//    console.log(nextProps.domains)
+    this.setState({domains: nextProps.domains.domains, all_count: nextProps.domains.all_count, order_field: nextProps.domains.order_field})
+//    console.log(this.state)
   }
 
   shortDate(data) {
@@ -145,11 +143,12 @@ class Domains extends Component {
 //    this.setState({...this.state, order_field: e.target.name})
     this.props.dispatch(sortDomains(e.target.name))
   }
-  
+
   render() {
-    // console.log('props: ', this.props)
-    const items = this.props.domains.domains //.slice(0,this.props.per_page)
-    const all_count = this.props.domains.all_count
+    console.log('render state: ', this.state)
+//    const items = this.state.domains //.slice(0,this.props.per_page)
+//    const all_count = this.state.all_count
+//    const order_field = this.state.order_field
     return <div>
         <Table
           height={this.state.height}
@@ -165,7 +164,7 @@ class Domains extends Component {
             enableSelectAll={this.state.enableSelectAll}>
             <TableRow>
               <TableHeaderColumn colSpan="3" tooltip="Super Header" style={{textAlign: 'center'}}>
-                {this.props.domains.all_count}
+                {this.state.all_count} {this.state.order_field}
               </TableHeaderColumn>
             </TableRow>
             <TableRow>
@@ -180,7 +179,7 @@ class Domains extends Component {
             showRowHover={this.state.showRowHover}
             stripedRows={this.state.stripedRows}
           >
-          {items.map((item,index) => {
+          {this.state.domains.map((item,index) => {
               return <TableRow key={item.id} selected={this.selected(item)}>
                 <TableRowColumn>{item.name_fqdn}</TableRowColumn>
                 <TableRowColumn><Status key={'status'+'-'+item.id}>{item.status}</Status></TableRowColumn>
@@ -209,5 +208,5 @@ class Domains extends Component {
 }
 
 export default Domains = connect(store => ({
-    token: store.viewer.token, domains: store.domains
+    token: store.viewer.token, domains: store.domains, order_field: store.domains.order_field
 }))(Domains)

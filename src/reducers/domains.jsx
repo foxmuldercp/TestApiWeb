@@ -17,6 +17,8 @@ export default function fetchDomains(state=initialDomains, action){
 
   case 'sort':
     const order_field = action.payload.order_field
+    console.log('reducer:', order_field)
+
     items = state.domains.sort(function (a, b) {
       if (a[state.order_field] > b[state.order_field]) {
         return 1;
@@ -30,7 +32,7 @@ export default function fetchDomains(state=initialDomains, action){
     return {
       ...state,
       domains: items,
-      order_field: action.payload.order_field
+      order_field: order_field
     }
   
   case 'unload':
