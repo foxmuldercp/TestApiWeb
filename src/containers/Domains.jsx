@@ -11,6 +11,8 @@ import {Table, TableBody, TableFooter, TableHeader, TableHeaderColumn,
 
 import Chip from 'material-ui/Chip'
 
+import CircularProgress from 'material-ui/CircularProgress';
+
 const styles = {
   propContainer: {
     width: 200,
@@ -124,9 +126,8 @@ class Domains extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-//    console.log(nextProps.domains)
-    this.setState({domains: nextProps.domains.domains, all_count: nextProps.domains.all_count, order_field: nextProps.domains.order_field})
-//    console.log(this.state)
+    const newState = {domains: nextProps.domains.domains, all_count: nextProps.domains.all_count, order_field: nextProps.domains.order_field}
+    this.setState(newState)
   }
 
   shortDate(data) {
@@ -135,20 +136,18 @@ class Domains extends Component {
   }
 
   selected(item){
-    return this.state.selectedDomains.includes(item)
+    if (this.state.selectedDomains.indexOf(item) != '-1' ){
+    return true
+    } else { return false }
   }
 
   setSort(e) {
     e.preventDefault()
-//    this.setState({...this.state, order_field: e.target.name})
     this.props.dispatch(sortDomains(e.target.name))
   }
 
   render() {
-    console.log('render state: ', this.state)
-//    const items = this.state.domains //.slice(0,this.props.per_page)
-//    const all_count = this.state.all_count
-//    const order_field = this.state.order_field
+    var items = this.state.domains //.slice(0,this.props.per_page)
     return <div>
         <Table
           height={this.state.height}
@@ -164,7 +163,8 @@ class Domains extends Component {
             enableSelectAll={this.state.enableSelectAll}>
             <TableRow>
               <TableHeaderColumn colSpan="3" tooltip="Super Header" style={{textAlign: 'center'}}>
-                {this.state.all_count} {this.state.order_field}
+                <p>all: {this.state.all_count} order: {this.state.order_field}</p>
+                selected: {this.state.selectedDomains.length}
               </TableHeaderColumn>
             </TableRow>
             <TableRow>
@@ -179,18 +179,17 @@ class Domains extends Component {
             showRowHover={this.state.showRowHover}
             stripedRows={this.state.stripedRows}
           >
-          {this.state.domains.map((item,index) => {
+          {(items.length > 1) ? items.map((item,index) => {
               return <TableRow key={item.id} selected={this.selected(item)}>
                 <TableRowColumn>{item.name_fqdn}</TableRowColumn>
                 <TableRowColumn><Status key={'status'+'-'+item.id}>{item.status}</Status></TableRowColumn>
                 <TableRowColumn>{this.shortDate(item.date_expire)}</TableRowColumn>
               </TableRow>
-            })
+            }) : <TableRow selectable={false}><TableRowColumn colSpan="3" style={{textAlign: 'center'}}><CircularProgress /></TableRowColumn></TableRow>
           }
           </TableBody>
           <TableFooter
-            adjustForCheckbox={this.state.showCheckboxes}
-          >
+            adjustForCheckbox={this.state.showCheckboxes}>
             <TableRow>
               <TableRowColumn>Name</TableRowColumn>
               <TableRowColumn>Status</TableRowColumn>
