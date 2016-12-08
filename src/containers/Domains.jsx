@@ -77,7 +77,7 @@ export class Status extends Component {
 
   render(){
     var items = this.props.items
-    console.log('chips rerender', this.props.name, items)
+//    console.log('chips rerender', this.props.name, items)
     return <div style={styles.wrapper}>
       {this.props.items.map(item => {
         return <Chip key={this.props.name+item} onRequestDelete={handleRequestDelete} style={{backgroundColor: this.chipStyle(item)}}>
@@ -105,7 +105,7 @@ class Domains extends Component {
       stripedRows: true,
       per_page: 10,
       current_page: 1,
-      domains: [],
+      domains: props.domains,
       selectedDomains: [],
       order_field: props.domains.order_field,
     }
@@ -151,7 +151,7 @@ class Domains extends Component {
 
   render() {
     var items = this.state.domains //.slice(0,this.props.per_page)
-    console.log('render items.length ', items.length)
+//    console.log('render items.length ', items.length)
     return <div>
         <Table
           height={this.state.height}
