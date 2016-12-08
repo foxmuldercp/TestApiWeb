@@ -4,6 +4,7 @@ import {connect} from 'react-redux'
 import {push} from 'react-router-redux'
 import moment from 'moment/min/moment.min'
 
+import DomainActionsMenu from './DomainActionsMenu'
 import {fetchDomains, sortDomains} from '../actions/domains'
 
 import {Table, TableBody, TableFooter, TableHeader, TableHeaderColumn, 
@@ -75,9 +76,11 @@ export class Status extends Component {
   }
 
   render(){
+    var items = this.props.items
+    console.log('chips rerender', this.props.name, items)
     return <div style={styles.wrapper}>
-      {this.props.children.map(item => {
-        return <Chip key={item} onRequestDelete={handleRequestDelete} style={{backgroundColor: this.chipStyle(item)}}>
+      {this.props.items.map(item => {
+        return <Chip key={this.props.name+item} onRequestDelete={handleRequestDelete} style={{backgroundColor: this.chipStyle(item)}}>
           <div>{item}</div>
         </Chip>
       })
@@ -104,7 +107,7 @@ class Domains extends Component {
       current_page: 1,
       domains: [],
       selectedDomains: [],
-      order_field: '', //props.domains.order_field,
+      order_field: props.domains.order_field,
     }
   }
 
@@ -148,6 +151,7 @@ class Domains extends Component {
 
   render() {
     var items = this.state.domains //.slice(0,this.props.per_page)
+    console.log('render items.length ', items.length)
     return <div>
         <Table
           height={this.state.height}
@@ -171,6 +175,7 @@ class Domains extends Component {
               <TableHeaderColumn tooltip="Name"><a name='name_fqdn' href='#' onClick={::this.setSort}>Name</a></TableHeaderColumn>
               <TableHeaderColumn tooltip="Status">Status</TableHeaderColumn>
               <TableHeaderColumn tooltip="Expiration"><a name='date_expire' href='#' onClick={::this.setSort}>Expiration</a></TableHeaderColumn>
+              <TableHeaderColumn tooltip="Actions">Actions</TableHeaderColumn>
             </TableRow>
           </TableHeader>
           <TableBody
@@ -182,10 +187,11 @@ class Domains extends Component {
           {(items.length > 1) ? items.map((item,index) => {
               return <TableRow key={item.id} selected={this.selected(item)}>
                 <TableRowColumn>{item.name_fqdn}</TableRowColumn>
-                <TableRowColumn><Status key={'status'+'-'+item.id}>{item.status}</Status></TableRowColumn>
+                <TableRowColumn><Status key={'status'+'-'+item.id} name={item.name_fqdn} items={item.status} /></TableRowColumn>
                 <TableRowColumn>{this.shortDate(item.date_expire)}</TableRowColumn>
+                <TableRowColumn><DomainActionsMenu {...this.props} item={item} /></TableRowColumn>
               </TableRow>
-            }) : <TableRow selectable={false}><TableRowColumn colSpan="3" style={{textAlign: 'center'}}><CircularProgress /></TableRowColumn></TableRow>
+            }) : <TableRow selectable='false'><TableRowColumn colSpan="3" style={{textAlign: 'center'}}><CircularProgress /></TableRowColumn></TableRow>
           }
           </TableBody>
           <TableFooter
@@ -194,6 +200,7 @@ class Domains extends Component {
               <TableRowColumn>Name</TableRowColumn>
               <TableRowColumn>Status</TableRowColumn>
               <TableRowColumn>Expiration</TableRowColumn>
+              <TableRowColumn tooltip="Actions">Actions</TableRowColumn>
             </TableRow>
             <TableRow>
               <TableRowColumn colSpan="3" style={{textAlign: 'center'}}>

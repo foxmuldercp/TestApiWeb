@@ -15,9 +15,22 @@ export default function fetchDomains(state=initialDomains, action){
       all_count: action.payload.meta.count
     }
 
+  case 'update_domain_item':
+    const item = action.payload.domain
+    var newdomains = state.domains
+    const index = newdomains.findIndex(obj => obj.name_fqn == item.name_fqdn)
+    newdomains[index] = item
+    console.log('reducer new item: ', newdomains[index])
+//    var index = state.domains.indexOf(item);
+//    if(index != -1) { array.splice( index, 1 ) }
+    return {
+      ...state,
+      domains: newdomains,
+    }
+
+
   case 'sort':
     const order_field = action.payload.order_field
-    console.log('reducer:', order_field)
 
     items = state.domains.sort(function (a, b) {
       if (a[state.order_field] > b[state.order_field]) {
