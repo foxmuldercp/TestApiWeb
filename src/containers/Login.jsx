@@ -43,9 +43,6 @@ class Login extends Component {
     const newstate = {state, [newfield]: newvalue, [newfield+"_error"]: errMsg, submitDisabled: canSubmit}
     this.setState(newstate) //{...this.state, [event.target.name]: event.target.value})
 
-    //const keys = Object.keys(this.state).map(i => (i).match('error'))
-    // = keys.map(i => { if(typeof(i) !== 'undefined') { i } })
-    //const myitems = Object.keys(this.state).filter(k => k.indexOf('error') !== -1).map(key => doSomethingWith(key))
   }
 
   fetchData(){
@@ -56,7 +53,7 @@ class Login extends Component {
     return <Container fluid={true}>
       <Row>
         <Col xs='12' sm='4' sm-offset='4' md='6' lg='6'>
-        <h2 class='roboto'>Login</h2>
+        <h2>Login</h2>
         </Col>
       </Row>
       <Row>
