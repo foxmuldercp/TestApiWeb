@@ -5,6 +5,10 @@ export const initialDomains = {
 
 export default function fetchDomains(state=initialDomains, action){
   var items
+  var item
+  var newdomains
+  var index
+  var newstate
   switch (action.type){
 
   case 'load':
@@ -16,14 +20,22 @@ export default function fetchDomains(state=initialDomains, action){
     }
 
   case 'update_domain_item':
-    const item = action.payload.domain
-    var newdomains = state.domains
-    const index = newdomains.findIndex(obj => obj.name_fqdn == item.name_fqdn)
+    item = action.payload.domain
+    newdomains = state.domains
+    index = newdomains.findIndex(obj => obj.name_fqdn == item.name_fqdn)
     newdomains[index] = item
-//    console.log('reducer new item: ', JSON.stringify(newdomains[index].status))
-    const newstate = {...state, domains: newdomains}
+    newstate = {...state, domains: newdomains}
     return newstate
 
+  case 'delete_domain_item':
+    item = action.payload.domain
+    newdomains = state.domains
+    index = newdomains.findIndex(obj => obj.name_fqdn == item.name_fqdn)
+    if (index > -1) {
+      newdomains.splice(index, 1)
+    }
+    newstate = {...state, domains: newdomains}
+    return newstate
 
   case 'sort':
     const order_field = action.payload.order_field

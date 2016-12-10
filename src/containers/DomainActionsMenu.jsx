@@ -14,7 +14,6 @@ class DomainActionsMenu extends Component {
 
   constructor(props) {
     super(props)
-//    console.log(props.item.url)
     this.state = {
       open: false,
     }
@@ -40,9 +39,9 @@ class DomainActionsMenu extends Component {
     this.props.dispatch(fetchViewerProps(this.state))
   }
 
-  handleChange (item, action) {
-//    console.log('item ', item, 'action ', action)
-    this.props.dispatch(domainActions(item, action))
+  handleChange (item, action, payload) {
+    this.setState({open: false})
+    this.props.dispatch(domainActions(item, action, payload))
   }
 
   render() {
@@ -59,9 +58,15 @@ class DomainActionsMenu extends Component {
           targetOrigin={{horizontal: 'left', vertical: 'top'}}
           onRequestClose={this.handleRequestClose}>
           <Menu>
-            <MenuItem primaryText="EPP HOLD" onClick={() => {if(confirm("Set HOLD for "+item.name_fqdn+"?")) {this.handleChange(item, 'epp_hold')}}} />
-            <MenuItem primaryText="EPP UNHOLD" onClick={() => {if(confirm("Set UNHOLD for "+item.name_fqdn+"?")) {this.handleChange(item, 'epp_unhold')}}} />
+            <MenuItem primaryText="EPP commands" disabled='true' />
             <Divider />
+            <MenuItem primaryText="UPDATE" onClick={() => {this.handleChange(item, 'epp_update_info')}} />
+            <Divider />
+            <MenuItem primaryText="HOLD" onClick={() => {if(confirm("Set HOLD for "+item.name_fqdn+"?")) {this.handleChange(item, 'epp_hold')}}} />
+            <MenuItem primaryText="UNHOLD" onClick={() => {if(confirm("Set UNHOLD for "+item.name_fqdn+"?")) {this.handleChange(item, 'epp_unhold')}}} />
+            <Divider />
+            <MenuItem primaryText="DELETE" onClick={() => {if(confirm("DELETE "+item.name_fqdn+"?")) {this.handleChange(item, 'epp_delete')}}} />
+            <MenuItem primaryText="RESTORE" onClick={() => {if(confirm("RESTORE "+item.name_fqdn+"?")) {this.handleChange(item, 'epp_restore')}}} />
           </Menu>
         </Popover>
       </div>
