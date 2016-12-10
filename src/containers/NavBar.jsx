@@ -9,8 +9,9 @@ import MenuItem from 'material-ui/MenuItem'
 import FlatButton from 'material-ui/FlatButton'
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert'
 import NavMenuIcon from 'material-ui/svg-icons/navigation/menu'
+import PersonIcon from 'material-ui/svg-icons/social/person'
 
-import {logOut} from '../actions/viewer'
+import {logOut, updateData} from '../actions/viewer'
 
 
 class LoginBtn extends Component {
@@ -29,12 +30,9 @@ class Logged extends Component {
 
   render() {
   return <IconMenu
-    iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
+    iconButtonElement={<IconButton><PersonIcon /></IconButton>}
     targetOrigin={{horizontal: 'right', vertical: 'top'}}
-    anchorOrigin={{horizontal: 'right', vertical: 'top'}}
-  >
-    <MenuItem primaryText="Refresh" />
-    <MenuItem primaryText="Help" />
+    anchorOrigin={{horizontal: 'right', vertical: 'top'}}>
     <MenuItem name='SignOut' primaryText="Sign out" onClick={() => this.props.dispatch(logOut())} />
   </IconMenu>
 }}
@@ -68,7 +66,7 @@ class NavBar extends Component {
         <AppBar
           title="Title"
           iconElementLeft={<NavMenuItems {...this.props} />}
-          iconElementRight={ email ? <div> {email} <Logged {...this.props} /> </div>:<LoginBtn {...this.props} />}
+          iconElementRight={ email ? <div> <Logged {...this.props} /> </div>:<LoginBtn {...this.props} />}
         />
       </div>
     )
